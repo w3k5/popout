@@ -5,6 +5,7 @@ import { BroadcastEvent, useBroadcastChannel } from "./use-broadcast-channel";
 export enum PopoutActions {
 	CLOSE_ALL = "popout:close_all",
 	CLOSE_TARGET = "popout:close_target",
+	SELF_CLOSE_POPOUT = "popout:self_close",
 }
 
 interface PopoutBroadcastEvent extends BroadcastEvent {
