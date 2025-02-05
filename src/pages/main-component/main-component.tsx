@@ -14,18 +14,13 @@ export const MainComponent = () => {
 
 	const mockList = useMemo(() => Array.from({ length: 30 }).map(() => nanoid(4)), []);
 
+	usePopoutEvent(initialChannelName, {
+		[PopoutActions.CLOSE_TARGET]: removePopout,
+	});
+
 	useEffect(() => {
 		init(initialChannelName);
 	}, []);
-
-	usePopoutEvent(initialChannelName, {
-		[PopoutActions.CLOSE_TARGET]: (target) => {
-			if (target) {
-				removePopout(target);
-			}
-		},
-	});
-
 	return (
 		<div style={{ display: "flex" }}>
 			<div className={styles.section}>

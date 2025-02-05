@@ -89,6 +89,7 @@ export const usePopout = () => {
 	};
 
 	return {
+		clearPopouts,
 		closeAll,
 		closeTarget,
 		focusPopout,

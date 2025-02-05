@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 
-export interface BroadcastEvent {
+export interface BroadcastEvent<T = never> {
 	data: {
-		type: string;
+		type: T;
 	};
 }
 
