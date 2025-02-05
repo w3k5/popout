@@ -1,5 +1,4 @@
 import chalk from "chalk";
-import { devtools, persist } from "zustand/middleware";
 import { create } from "zustand/react";
 
 import { PopoutActions } from "./use-popout-event";
@@ -15,26 +14,19 @@ interface PopoutStore {
 	removePopout: (id: string) => void;
 }
 
-export const usePopoutStore = create<PopoutStore>()(
-	devtools(
-		persist(
-			(set) => ({
-				addPopout: (id) => set((state) => ({ popouts: [...state.popouts, id] })),
-				channel: BROADCAST_POPOUT_KEY,
-				clearPopouts: () => set({ popouts: [] }),
-				init: (initialChannelName) => {
-					set((state) => {
-						console.log("initial channel", initialChannelName);
-						return { ...state, channel: initialChannelName };
-					});
-				},
-				popouts: [],
-				removePopout: (id) => set((state) => ({ popouts: state.popouts.filter((popoutId) => popoutId !== id) })),
-			}),
-			{ name: "popouts" },
-		),
-	),
-);
+export const usePopoutStore = create<PopoutStore>((set) => ({
+	addPopout: (id) => set((state) => ({ popouts: [...state.popouts, id] })),
+	channel: BROADCAST_POPOUT_KEY,
+	clearPopouts: () => set({ popouts: [] }),
+	init: (initialChannelName) => {
+		set((state) => {
+			console.log("initial channel", initialChannelName);
+			return { ...state, channel: initialChannelName };
+		});
+	},
+	popouts: [],
+	removePopout: (id) => set((state) => ({ popouts: state.popouts.filter((popoutId) => popoutId !== id) })),
+}));
 
 export const usePopout = () => {
 	const popouts = usePopoutStore((state) => state.popouts);

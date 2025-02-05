@@ -8,8 +8,7 @@ import { usePopout, usePopoutStore } from "../../shared/use-popout-store";
 export const MainComponent = () => {
 	const [params] = useSearchParams();
 	const initialChannelName = params.get("channel") ?? "default_channel";
-	const { closeAll, closeTarget, focusPopout, openPopout } = usePopout();
-	const popouts = usePopoutStore((state) => state.popouts);
+	const { closeAll, closeTarget, focusPopout, openPopout, popouts } = usePopout();
 	const init = usePopoutStore((state) => state.init);
 
 	useEffect(() => {
