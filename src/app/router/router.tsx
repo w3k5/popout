@@ -7,7 +7,7 @@ import { MainComponent } from "../../pages/main-component/main-component";
 const router = createBrowserRouter([
 	{
 		element: <MainComponent />,
-		path: "/",
+		path: "*",
 	},
 	{
 		element: <ChildComponent />,
