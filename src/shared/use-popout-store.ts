@@ -35,27 +35,40 @@ export const usePopout = () => {
 	const removePopout = usePopoutStore((state) => state.removePopout);
 	const init = usePopoutStore((state) => state.init);
 
+	const popoutsMap: Record<string, null | Window> = {};
+
 	const openPopout = ({ channel, target }: { channel: string; target: string }) => {
 		console.log(chalk.blue(`Попытка открытия нового окна для канала ${channel}`));
 		const url = `${location.origin}${target}?channel=${channel}`;
 		console.log(chalk.blue(`Таргет нового окна ${url}`));
 
-		// Балования
-		const gap = popouts.length * 25;
-		const initialLeft = 100;
-		const initialTop = 100;
-		const left = initialLeft + gap;
-		const top = initialTop + gap;
-		// =========
+		// Проверяем, есть ли окно в popoutsMap
+		const existingWindow = popoutsMap[target];
 
-		const newWindow = window.open(
-			url,
-			target,
-			`scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=${900},height=${300},left=${left},top=${top}`,
-		);
+		if (existingWindow && !existingWindow.closed) {
+			console.log(chalk.blue(`Окно ${target} уже открыто. Устанавливаем на него фокус.`));
+			existingWindow.focus();
+		} else {
+			console.log(chalk.blue(`Окно ${target} не найдено или было закрыто. Создаем новое окно.`));
 
-		if (newWindow) {
-			addPopout(target);
+			const gap = popouts.length * 25;
+			const initialLeft = 100;
+			const initialTop = 100;
+			const left = initialLeft + gap;
+			const top = initialTop + gap;
+
+			const newWindow = window.open(
+				url,
+				target,
+				`scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=900,height=300,left=${left},top=${top}`,
+			);
+
+			if (newWindow) {
+				popoutsMap[target] = newWindow; // Сохраняем ссылку на окно
+				addPopout(target);
+			} else {
+				console.error(`Не удалось открыть окно ${target}`);
+			}
 		}
 	};
 
