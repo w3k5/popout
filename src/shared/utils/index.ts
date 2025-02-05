@@ -1,9 +1,5 @@
-import chalk from "chalk";
-
 export const createPopoutUrl = ({ channel, target }: { channel: string; target: string }) => {
-	console.log(chalk.blue(`Попытка открытия нового окна для канала ${channel}`));
 	const url = `${location.origin}${target}?channel=${channel}`;
-	console.log(chalk.blue(`Таргет нового окна ${url}`));
 	return url;
 };
 

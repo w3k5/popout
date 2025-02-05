@@ -82,7 +82,7 @@ export const usePopout = () => {
 	const closeTarget = (channel: string, target: string) => {
 		console.log(chalk.blue(`Попытка закрытия окна ${target} канала ${channel}`));
 		const broadcastChannel = new BroadcastChannel(channel);
-
+		console.log(broadcastChannel);
 		broadcastChannel.postMessage({ target, type: PopoutActions.CLOSE_TARGET });
 		removePopout(target);
 		broadcastChannel.close();
@@ -95,5 +95,6 @@ export const usePopout = () => {
 		init,
 		openPopout,
 		popouts,
+		removePopout,
 	};
 };

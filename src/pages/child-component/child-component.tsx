@@ -1,8 +1,23 @@
 import { nanoid } from "nanoid";
+import { useEffect } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 
 import { usePopoutEvent } from "../../shared/use-popout-event";
 import { usePopout } from "../../shared/use-popout-store";
+
+const useBeforeUnload = (callback: () => void) => {
+	useEffect(() => {
+		const handleBeforeUnload = () => {
+			callback();
+		};
+
+		window.addEventListener("beforeunload", handleBeforeUnload);
+
+		return () => {
+			window.removeEventListener("beforeunload", handleBeforeUnload);
+		};
+	}, []);
+};
 
 export const ChildComponent = () => {
 	const [params] = useSearchParams();
@@ -17,9 +32,13 @@ export const ChildComponent = () => {
 
 	usePopoutEvent(channel);
 
+	useBeforeUnload(() => closeTarget(channel, location.href));
+
 	return (
-		<div>
-			Children {id}. Channel: {channel}
+		<div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+			<h3>Children {id}</h3>
+			<h3>Таргет {location.href}</h3>
+			<h3>Канал {channel}</h3>
 			<button onClick={() => closeAll({ channel, shouldCloseCurrent: true })}>
 				Закрыть все дочерние окна канала, включая текущее окно
 			</button>
